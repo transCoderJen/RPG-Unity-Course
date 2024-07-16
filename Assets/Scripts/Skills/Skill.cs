@@ -18,17 +18,24 @@ public class Skill : MonoBehaviour
         cooldownTimer -= Time.deltaTime;
     }
 
-    public virtual bool CanUseSkill()
+    public virtual bool CanUseSkill(bool _useSkill = true)
     {
         if (cooldownTimer < 0)
         {
-            UseSkill();
-            cooldownTimer = cooldown;
+            if (_useSkill)
+            {
+                UseSkill();
+                cooldownTimer = cooldown;
+            }
             return true;
         }
-
-        Debug.Log("Skill is in cooldown");
+        
         return false;
+    }
+
+    public virtual void resetTimer()
+    {
+        cooldownTimer = cooldown;
     }
 
     public virtual void UseSkill()

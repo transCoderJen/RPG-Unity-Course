@@ -80,6 +80,7 @@ public class CloneSkillController : MonoBehaviour
 
                 if (distanceToEnemy < closestDistance)
                 {
+                    closestDistance = distanceToEnemy;
                     closestEnemy = hit.transform;
                 }
             }

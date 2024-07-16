@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerCounterAttackState : PlayerState
@@ -26,6 +28,7 @@ public class PlayerCounterAttackState : PlayerState
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
         
+        bool createClone = true;
         foreach(var hit in colliders)
         {
             if (hit.GetComponent<Enemy>() != null)
@@ -34,6 +37,11 @@ public class PlayerCounterAttackState : PlayerState
                 {
                     stateTimer = 10;
                     player.anim.SetBool("SuccessfulCounterAttack", true);
+                    if (createClone)
+                    {
+                        player.skill.clone.CreateCloneOnCounter(hit.transform, new Vector3(2.5f * player.facingDir, 0));
+                        createClone = false;
+                    }
                 }
             }
         }
