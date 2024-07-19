@@ -27,6 +27,7 @@ public class BlackholeSkillController : MonoBehaviour
     private List<GameObject> createdHotkeys = new List<GameObject>();
 
     public bool playerCanExitState { get; private set; }
+    private bool playerCanDisappear = true;
 
     public void SetupBlackhole(float _maxSize, float _growSpeed, float _shrinkSpeed, int _amountOfAttacks, float _cloneAttackCooldown, float _blackholeDuration)
     {
@@ -36,6 +37,9 @@ public class BlackholeSkillController : MonoBehaviour
         amountOfAttacks = _amountOfAttacks;
         cloneAttackCooldown = _cloneAttackCooldown;
         blackholeTimer = _blackholeDuration;
+
+        if(SkillManager.instance.clone.CanSpawnCrystal())
+            playerCanDisappear = false;
     }
 
     private void Update()
@@ -72,7 +76,8 @@ public class BlackholeSkillController : MonoBehaviour
 
     private void ReleaseCloneAttack()
     {
-        PlayerManager.instance.player.MakeTransparent(true);
+        if (playerCanDisappear)
+            PlayerManager.instance.player.MakeTransparent(true);
         cloneAttackInitiated = true;
         canCreateHotkeys = false;
         DestroyHotHeys();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EntityFX : MonoBehaviour
@@ -11,6 +12,12 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private float flashDuration;
     [SerializeField] private int flashCount;
     private Material originalMat;
+
+    [Header("Ailment Colors")]
+    [SerializeField] private Color chillColor;
+    [SerializeField] private Color[] igniteColor;
+    [SerializeField] private Color[] shockColor;
+
 
     private void Start()
     {
@@ -39,7 +46,42 @@ public class EntityFX : MonoBehaviour
             sr.color = Color.red;
     }
 
-    private void CancelRedBlink()
+    public void IgniteFxFor(float _seconds)
+    {
+        InvokeRepeating("IgniteColorFX", 0, .15f);
+        Invoke("CancelColorChange", _seconds);
+    }
+
+    public void ChillFxFor(float _seconds)
+    {
+        sr.color = chillColor;
+        Invoke("CancelColorChange", _seconds);
+    }
+
+    public void ShockFxFor(float _seconds)
+    {
+        InvokeRepeating("ShockColorFX", 0, .15f);
+        Invoke("CancelColorChange", _seconds);
+
+    }
+    
+    private void IgniteColorFX()
+    {
+        if (sr.color != igniteColor[0])
+            sr.color = igniteColor[0];
+        else
+            sr.color = igniteColor[1];
+    }
+
+    private void ShockColorFX()
+    {
+        if (sr.color != shockColor[0])
+            sr.color = shockColor[0];
+        else
+            sr.color = shockColor[1];
+    }
+
+    private void CancelColorChange()
     {
         CancelInvoke();
         sr.color = Color.white;

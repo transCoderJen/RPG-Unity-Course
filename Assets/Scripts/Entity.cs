@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -9,6 +8,8 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb {get; private set; }
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
+    public CharacterStats stats { get; private set; }
+    public CapsuleCollider2D cd {get; private set; }
     #endregion
     
     [Header("Knockback Info")]
@@ -30,6 +31,7 @@ public class Entity : MonoBehaviour
     public int facingDir {get; private set; } = 1;
     protected bool facingRight = true;
 
+    public System.Action onFlipped = delegate {};
 
     protected virtual void Awake()
     {
@@ -42,6 +44,8 @@ public class Entity : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         fx = GetComponent<EntityFX>();
         rb = GetComponent<Rigidbody2D>();
+        stats = GetComponent<CharacterStats>();
+        cd = GetComponent<CapsuleCollider2D>();
     }
 
     protected virtual void Update()
@@ -49,7 +53,7 @@ public class Entity : MonoBehaviour
 
     }
 
-    public virtual void Damage(bool _knockback = true)
+    public virtual void DamageEffect(bool _knockback = true)
     {
         fx.StartCoroutine("FlashFX");
 
@@ -107,6 +111,8 @@ public class Entity : MonoBehaviour
         facingDir = facingDir * -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+
+        onFlipped();
     }
 
     public virtual void FlipController(float _x)
@@ -124,5 +130,10 @@ public class Entity : MonoBehaviour
             sr.color = Color.clear;
         else
             sr.color = Color.white;
+    }
+
+    public virtual void Die()
+    {
+
     }
 }

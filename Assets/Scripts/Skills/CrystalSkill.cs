@@ -21,6 +21,7 @@ public class CrystalSkill : Skill
     [Header("Moving Crsytal")]
     [SerializeField] private bool canMoveToEnemy;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private bool moveTowardsClosestEnemy;
 
     [Header("Multi Stacking Crystal")]
     [SerializeField] private bool canUseMultiStacks;
@@ -44,10 +45,7 @@ public class CrystalSkill : Skill
         {
             if (currentCrystal == null)
             {
-                currentCrystal = Instantiate(crystalPrebaf, player.transform.position, Quaternion.identity);
-                CrystalSkillController currentCrystalScript = currentCrystal.GetComponent<CrystalSkillController>();
-
-                currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, growSpeed, maxSize);
+                CreateCrystal();
             }
             else
             {
@@ -68,6 +66,14 @@ public class CrystalSkill : Skill
                 }
             }
         }
+    }
+
+    public void CreateCrystal()
+    {
+        currentCrystal = Instantiate(crystalPrebaf, player.transform.position, Quaternion.identity);
+        CrystalSkillController currentCrystalScript = currentCrystal.GetComponent<CrystalSkillController>();
+
+        currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, growSpeed, maxSize, moveTowardsClosestEnemy);
     }
 
     protected override void Start()
@@ -97,7 +103,7 @@ public class CrystalSkill : Skill
             GameObject newCrystal = Instantiate(crystalToSpawn, player.transform.position, Quaternion.identity);
             CrystalSkillController newCrystalScript = newCrystal.GetComponent<CrystalSkillController>();
 
-            newCrystalScript.SetupCrystal(3.5f, true, true, moveSpeed, growSpeed, maxSize);
+            newCrystalScript.SetupCrystal(3.5f, true, true, moveSpeed, growSpeed, maxSize, moveTowardsClosestEnemy);
 
             crystalLeft.RemoveAt(crystalLeft.Count - 1);
             return true;
