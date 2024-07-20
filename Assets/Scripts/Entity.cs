@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Entity : MonoBehaviour
 {
@@ -51,6 +52,16 @@ public class Entity : MonoBehaviour
     protected virtual void Update()
     {
 
+    }
+
+    public virtual void SlowEntityBy(float _slowPercentage, float _slowDuration)
+    {
+
+    }
+
+    protected virtual void ReturnDefaultSpeed()
+    {
+        anim.speed = 1;
     }
 
     public virtual void DamageEffect(bool _knockback = true)
@@ -126,10 +137,18 @@ public class Entity : MonoBehaviour
 
     public void MakeTransparent(bool _transparent)
     {
+        CanvasGroup slider = GetComponentInChildren<CanvasGroup>();
+
         if (_transparent)
+        {
             sr.color = Color.clear;
+            slider.alpha = 0;
+        }
         else
+        {
             sr.color = Color.white;
+            slider.alpha = 1;
+        }
     }
 
     public virtual void Die()

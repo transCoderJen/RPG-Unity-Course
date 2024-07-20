@@ -41,7 +41,8 @@ public class CharacterStats : MonoBehaviour
     private float ignitedTimer;
     private float chilledTimer;
     private float shockedTimer;
-
+    [SerializeField] private GameObject thunderStrikePrefab;
+    
     private float igniteDamageCooldown = .6f;
     private float igniteDamageTimer;
     private int igniteDamage;
@@ -175,6 +176,9 @@ public class CharacterStats : MonoBehaviour
             isChilled = _chill;
             chilledTimer = ailmentCooldown;
 
+            float _slowPercentage = .35f;
+        
+            GetComponent<Entity>().SlowEntityBy(_slowPercentage, ailmentCooldown);
             fx.ChillFxFor(ailmentCooldown);
         }
 
@@ -184,7 +188,47 @@ public class CharacterStats : MonoBehaviour
             shockedTimer = ailmentCooldown;
 
             fx.ShockFxFor(ailmentCooldown);
+            GameObject newThunderStrike = Instantiate(thunderStrikePrefab, transform);
+            newThunderStrike.GetComponent<ThunderStrikeController>().Setup(1, this);
+            
+            List<CharacterStats> targetedEnemies = new List<CharacterStats>();
+
+            targetedEnemies = FindClosestTargets();
+
+            if (targetedEnemies != null)
+            {
+
+                if (targetedEnemies.Count > 0)
+                {
+                    for (int i = 0; i < targetedEnemies.Count; i++)
+                    {
+                        GameObject enemyThunderStrike = Instantiate(thunderStrikePrefab, transform);
+                        enemyThunderStrike.GetComponent<ThunderStrikeController>().Setup(1, targetedEnemies[i]);
+                    }
+                }
+            }
         }
+    }
+
+    private List<CharacterStats> FindClosestTargets()
+    {
+        if (GetComponent<Player>() != null)
+            return null;
+        // CharacterStats closestEnemy = null;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 10);
+
+        List<CharacterStats> enemies = new List<CharacterStats>();
+
+        foreach(var hit in colliders)
+        {
+            if(hit.GetComponent<Enemy>() != null && hit.gameObject != gameObject)
+            {
+                enemies.Add(hit.GetComponent<CharacterStats>());
+                
+            }
+        }
+        
+        return enemies;
     }
 
     public virtual void TakeDamage(int _damage)
