@@ -25,6 +25,23 @@ public class EntityFX : MonoBehaviour
         originalMat = sr.material;
     }
 
+    public void MakeTransparent(bool _transparent)
+    {
+        CanvasGroup slider = GetComponentInChildren<CanvasGroup>();
+        Debug.Log(slider == null);
+
+        if (_transparent)
+        {
+            sr.color = Color.clear;
+            slider.alpha = 0;
+        }
+        else
+        {
+            sr.color = Color.white;
+            slider.alpha = 1;
+        }
+    }
+
     private IEnumerator FlashFX()
     {
         for (int i = 1; i < flashCount; i++)

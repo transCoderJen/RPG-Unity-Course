@@ -52,4 +52,6 @@ public class PlayerPrimaryAttackState : PlayerState
             stateMachine.ChangeState(player.idleState);
     }
 
+    public int getComboCounter() => comboCounter;
+
 }

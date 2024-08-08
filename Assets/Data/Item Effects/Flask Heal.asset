@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774f5b55c080ddb428b6c9f88e62474b, type: 3}
+  m_Name: Flask Heal
+  m_EditorClassIdentifier: 
+  auraPrefab: {fileID: 4905964946531853464, guid: d311da8923ed702498e8111d2917026e, type: 3}
+  healPrebaf: {fileID: 2027104083585291885, guid: 720e7fa5fcbb3104885f122b6acd24d8, type: 3}
+  healPercent: 0.3

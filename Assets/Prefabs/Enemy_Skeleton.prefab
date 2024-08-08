@@ -153,6 +153,9 @@ MonoBehaviour:
   hitMat: {fileID: 2100000, guid: 3c1febeb4280078488ba8a4ebcbad5e7, type: 2}
   flashDuration: 0.05
   flashCount: 5
+  chillColor: {r: 0, g: 0, b: 0, a: 0}
+  igniteColor: []
+  shockColor: []
 --- !u!114 &5552864816209136196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,13 +171,53 @@ MonoBehaviour:
   strength:
     baseValue: 5
     modifiers: 
+  agility:
+    baseValue: 0
+    modifiers: 
+  intelligence:
+    baseValue: 0
+    modifiers: 
+  vitality:
+    baseValue: 0
+    modifiers: 
   damage:
     baseValue: 5
+    modifiers: 
+  critChance:
+    baseValue: 0
+    modifiers: 
+  critPower:
+    baseValue: 0
     modifiers: 
   maxHealth:
     baseValue: 100
     modifiers: 
+  armor:
+    baseValue: 0
+    modifiers: 
+  evasion:
+    baseValue: 0
+    modifiers: 
+  magicResistance:
+    baseValue: 0
+    modifiers: 
+  fireDamage:
+    baseValue: 0
+    modifiers: 
+  iceDamage:
+    baseValue: 0
+    modifiers: 
+  lightningDamage:
+    baseValue: 0
+    modifiers: 
+  isIgnited: 0
+  isChilled: 0
+  isShocked: 0
+  ailmentCooldown: 0
+  shockStrikePrefab: {fileID: 5499952005911890495, guid: fadb6565aaf51e445a6c98e06ee0e2d3, type: 3}
   currentHealth: 0
+  level: 1
+  percentageModifier: 0.2
 --- !u!1 &1013952893639712659
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +322,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1407434469
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -85727878, guid: 687df074731fbf744b668d2275dbb675, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -427,7 +470,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1407434469
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: -10
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.8679245, g: 0.13510147, b: 0.13510147, a: 1}

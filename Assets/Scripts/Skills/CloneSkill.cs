@@ -31,7 +31,7 @@ public class CloneSkill : Skill
         }
         GameObject newClone = Instantiate(clonePrefab);
         
-        newClone.GetComponent<CloneSkillController>().SetupClone(_clonePosition, cloneDuration, canAttack, _offset, canDuplicateClone, duplicationChancePercent);
+        newClone.GetComponent<CloneSkillController>().SetupClone(_clonePosition, cloneDuration, canAttack, _offset, canDuplicateClone, duplicationChancePercent, player);
     }
 
     public bool CanSpawnCrystal() => canSpawnCrystal;
