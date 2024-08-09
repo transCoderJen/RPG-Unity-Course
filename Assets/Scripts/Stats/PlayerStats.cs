@@ -37,13 +37,5 @@ public class PlayerStats : CharacterStats
                 armor.Effect(player.transform);
         }
     }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        Debug.Log("Current " + currentHealth);
-        Debug.Log("Max " + GetMaxHealthValue());
-    }
 }
 

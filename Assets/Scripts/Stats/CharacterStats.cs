@@ -7,6 +7,25 @@ using System.Xml.Serialization;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 using IEnumerator = System.Collections.IEnumerator;
+
+public enum StatType
+{
+    strength,
+    agility,
+    intelligence,
+    vitality, 
+    damage,
+    critChance,
+    critPower,
+    health,
+    armor,
+    evasion,
+    magicRes,
+    fireDamage,
+    iceDamage,
+    lightningDamage
+}
+
 public class CharacterStats : MonoBehaviour
 {
     private EntityFX fx;
@@ -324,4 +343,41 @@ public class CharacterStats : MonoBehaviour
         return (int)totalCriticalDamage;
     }
     #endregion
+
+    public Stat getStat(StatType statType)
+    {
+        switch (statType)
+        {
+            case StatType.strength:
+                return strength;
+            case StatType.agility:
+                return agility;
+            case StatType.intelligence:
+                return intelligence;
+            case StatType.vitality:
+                return vitality;
+            case StatType.damage:
+                return damage;
+            case StatType.critChance:
+                return critChance;
+            case StatType.critPower:
+                return critPower;
+            case StatType.health:
+                return maxHealth;
+            case StatType.armor:
+                return armor;
+            case StatType.evasion:
+                return evasion;
+            case StatType.magicRes:
+                return magicResistance;
+            case StatType.fireDamage:
+                return fireDamage;
+            case StatType.iceDamage:
+                return iceDamage;
+            case StatType.lightningDamage:
+                return lightningDamage;
+            default:
+                throw new System.ArgumentException("Invalid stat type");
+        }
+    }
 }
