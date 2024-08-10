@@ -12,24 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1e181df4e58d840a587f213e168949, type: 3}
   m_Name: Blue Wolf Armor
   m_EditorClassIdentifier: 
-  itemType: 0
-  itemName: 
-  icon: {fileID: 0}
+  itemType: 1
+  itemName: Blue Wolf Armor
+  icon: {fileID: 288293509, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   dropChance: 0
-  equipmentType: 0
-  itemCooldown: 0
-  itemEffects: []
-  strength: 0
+  equipmentType: 1
+  itemCooldown: 5
+  itemEffects:
+  - {fileID: 11400000, guid: 9d3b880b1e6061047885c1f5605b0644, type: 2}
+  strength: 4
   agility: 0
   intelligence: 0
   vitality: 0
   damage: 0
-  critChance: 0
+  critChance: 2
   critPower: 0
-  health: 0
-  armor: 0
+  health: 50
+  armor: 15
   evasion: 0
-  magicResistance: 0
+  magicResistance: 15
   fireDamage: 0
   iceDamage: 0
   lightningDamage: 0

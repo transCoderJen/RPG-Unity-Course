@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 1
   itemName: Healing Flask
+  description: Restores 30% HP
   icon: {fileID: -410334530, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   dropChance: 0
   equipmentType: 3
-  itemCooldown: 2
+  itemCooldown: 15
   itemEffects:
   - {fileID: 11400000, guid: 29807205b51e67e47b26fa70e724ccaf, type: 2}
   strength: 0

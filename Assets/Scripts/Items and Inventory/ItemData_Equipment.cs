@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public enum EquipmentType
 {
@@ -42,6 +45,7 @@ public class ItemData_Equipment : ItemData
 
     [Header("Craft Requirements")]
     public List<InventoryItem> craftingMaterials;
+    private int descriptionLength;
     
     public void Effect(Transform _spawnPosition)
     {
@@ -99,6 +103,61 @@ public class ItemData_Equipment : ItemData
         playerStats.lightningDamage.RemoveModifier(lightningDamage);
 
         playerStats.DecreaseHealthBy(health);
+    }
 
-    }  
+    public override string GetDescription()
+    {
+        sb.Length = 0;
+        descriptionLength = 0;
+
+        AddItemDescription(strength, "Strength");
+        AddItemDescription(agility, "Agility");
+        AddItemDescription(intelligence, "Intelligence");
+        AddItemDescription(vitality, "Vitality");
+
+        AddItemDescription(damage, "Damage");
+        AddItemDescription(critChance, "Crit. Chance", true);
+        AddItemDescription(critPower, "Crit. Power", true);
+
+        AddItemDescription(health, "Health");
+        AddItemDescription(armor, "Armor");
+        AddItemDescription(evasion, "Evasion");
+        AddItemDescription(magicResistance, "Magic Resist.");
+
+        AddItemDescription(fireDamage, "Fire Damage");
+        AddItemDescription(iceDamage, "Ice Damage");
+        AddItemDescription(lightningDamage, "Lightning Dmg");
+
+        AddItemDescription(1000000, description);
+
+        if (descriptionLength < 5)
+        {
+            for (int i=0; i < 5 - descriptionLength; i++)
+            {
+                sb.AppendLine();
+            }
+        }
+        return sb.ToString();
+    }
+
+    private void AddItemDescription(int _value, string _name, bool percent = false)
+    {
+        if (_value != 0)
+        {
+            
+            sb.AppendLine();
+            
+            if (_value == 1000000)
+            {
+                sb.Append(_name);
+            }
+            else if (_value > 0)
+                if (percent)
+                    sb.Append("+ " + _value + "% " + _name);
+                else
+                    sb.Append("+ " + _value + " " + _name);
+            
+            descriptionLength++;
+        }
+    }
 }

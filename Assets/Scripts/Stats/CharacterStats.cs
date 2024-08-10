@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviour
     public Stat strength; // 1 point increases damage by 1 and crit. power by 1%
     public Stat agility; // 1 point increases evasion and crit. chance by 1%
     public Stat intelligence; // 1 point increases magic damage and resistance by 3
-    public Stat vitality; // 1 point increases health by 3
+    public Stat vitality; // 1 point increases health by 5
 
     [Header("Offensive Stats")]
     public Stat damage;
@@ -48,9 +48,9 @@ public class CharacterStats : MonoBehaviour
     public Stat magicResistance;
 
     [Header("Magic Stats")]
-    public Stat fireDamage;
-    public Stat iceDamage;
-    public Stat lightningDamage;
+    public Stat fireDamage;  // does damage over time
+    public Stat iceDamage; // also reduces targets armor by 20% 
+    public Stat lightningDamage; // also reduces targets accuracy by 20%
 
     public bool isIgnited; // does damage over time
     public bool isChilled; // armor reduced by 20% 
@@ -134,7 +134,7 @@ public class CharacterStats : MonoBehaviour
         if (TargetCanAvoidAttack(_targetStats))
             return;
 
-        int totalDamage = damage.GetValue() + strength.GetValue();
+        int totalDamage = GetTotalDamage();
 
         if (CanCrit())
         {
@@ -143,10 +143,15 @@ public class CharacterStats : MonoBehaviour
 
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
         _targetStats.TakeDamage(totalDamage, _knockback);
-        
+
         DoMagicDamage(_targetStats, _knockback);
     }
- 
+
+    public int GetTotalDamage()
+    {
+        return damage.GetValue() + strength.GetValue();
+    }
+
     public virtual void TakeDamage(int _damage, bool _knockback)
     {
         GetComponent<Entity>().DamageEffect(_knockback);
