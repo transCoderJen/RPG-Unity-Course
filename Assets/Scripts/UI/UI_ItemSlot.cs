@@ -6,16 +6,16 @@ using Unity.VisualScripting;
 
 public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Image itemImage;
-    [SerializeField] private TextMeshProUGUI itemText;
-
-    private UI ui;
+    [SerializeField] protected Image itemImage;
+    [SerializeField] protected TextMeshProUGUI itemText;
+    protected UI ui;
     public InventoryItem item;
 
-    private void Start()
+    protected virtual void Start()
     {
         ui = GetComponentInParent<UI>();
     }
+    
     public void UpdateSlot(InventoryItem _newItem)
     {
         item = _newItem;
@@ -59,11 +59,14 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
         
         if (item.data.itemType == ItemType.Equipment)
             Inventory.instance.EquipItem(item.data);
+        
+        ui.itemTooltip.HideToolTip();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item != null && item.data != null)
+        if (item != null && item.data != null && item.data.itemType != ItemType.Material)
+            
             ui.itemTooltip.ShowToolTip(item.data as ItemData_Equipment);
     }
 

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 1
   itemName: Dracula's Sword
+  description: 
   icon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   dropChance: 10
   equipmentType: 0
@@ -34,4 +35,10 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightningDamage: 0
-  craftingMaterials: []
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: ec19215ec8e98ae459bce1affd0df3e9, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: bdead439e559a834fa1abc2d52f2089e, type: 2}
+    stackSize: 2
+  - data: {fileID: 11400000, guid: dc4b26fa91c2ca5448f5f3635dd25860, type: 2}
+    stackSize: 2
