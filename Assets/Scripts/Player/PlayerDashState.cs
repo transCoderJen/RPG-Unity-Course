@@ -12,8 +12,7 @@ public class PlayerDashState : PlayerState
     {
         base.Enter();
 
-        player.skill.clone.CreateCloneOnDashStart();
-
+        player.skill.dash.CloneOnDash();
         stateTimer = player.dashDuration;
     }
 
@@ -21,7 +20,7 @@ public class PlayerDashState : PlayerState
     {
 
         player.SetVelocity(0, rb.velocity.y);
-        player.skill.clone.CreateCloneOnDashOver();
+        player.skill.dash.CloneOnArrival();
         base.Exit();
     }
 

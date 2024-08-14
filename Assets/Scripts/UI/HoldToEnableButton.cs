@@ -4,12 +4,15 @@ using UnityEngine.EventSystems;
 
 public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public float holdTime = 2.0f;  // Time in seconds to hold the click
+    [SerializeField] private float holdTime = 1.5f;  // Time in seconds to hold the click
     private float holdDuration = 0.0f;
     private bool isHolding = false;
 
     private Button button;
-    public Image fillImage;  // Reference to the fill image
+
+    [SerializeField] private Image fillImage;  // Reference to the fill image
+    [SerializeField] private Image parentImage;
+    
 
     void Start()
     {
@@ -36,6 +39,7 @@ public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUp
             if (holdDuration >= holdTime)
             {
                 button.interactable = true;
+                parentImage.color = Color.white;
                 isHolding = false;  // Stop holding after enabling the button
             }
         }

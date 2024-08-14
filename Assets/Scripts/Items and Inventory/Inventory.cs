@@ -125,7 +125,7 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < stashItemSlot.Length; i++)
         {
             stashItemSlot[i].CleanUpSlot();
-            
+
         }
 
         for (int i = 0; i < inventory.Count; i++)
@@ -135,9 +135,14 @@ public class Inventory : MonoBehaviour
 
         for (int i = 0; i < stash.Count; i++)
         {
-            stashItemSlot[i].UpdateSlot(stash[i]);   
+            stashItemSlot[i].UpdateSlot(stash[i]);
         }
 
+        UpdateStatsUI();
+    }
+
+    public void UpdateStatsUI()
+    {
         for (int i = 0; i < statSlot.Length; i++)
         {
             statSlot[i].UpdateStatValueUI();

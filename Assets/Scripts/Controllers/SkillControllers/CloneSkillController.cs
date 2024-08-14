@@ -47,7 +47,6 @@ public class CloneSkillController : MonoBehaviour
         if (_canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1, 3));
 
-
         transform.position = _newTransform.position + _offset;
         cloneTimer = _cloneDuration;
         canDuplicateClone = _canDuplicateClone;
@@ -69,7 +68,17 @@ public class CloneSkillController : MonoBehaviour
         {
             if (hit.GetComponent<Enemy>() != null)
             {
-                player.stats.DoDamage(hit.GetComponent<CharacterStats>(), true);
+                float damagePercentage = .3f;
+
+                if (player.skill.clone.aggressiveMirageUnlocked)
+                    damagePercentage = .8f;
+            
+                player.stats.DoDamage(hit.GetComponent<CharacterStats>(), true, damagePercentage);
+
+                ItemData_Equipment weaponData = Inventory.instance.GetEquipment(EquipmentType.Weapon);
+                
+                if (player.skill.clone.aggressiveMirageUnlocked && weaponData != null)
+                    weaponData.Effect(hit.transform);
 
                 if(canDuplicateClone && Random.Range(0, 100) < duplicationChancePercent)
                 {

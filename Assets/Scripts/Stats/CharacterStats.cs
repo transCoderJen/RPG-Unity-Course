@@ -70,6 +70,8 @@ public class CharacterStats : MonoBehaviour
 
     public System.Action onHealthChanged = delegate { };
     public bool isDead { get; private set; }
+    public bool vulnerable;
+    private float vulnerabilityAmount;
     
     protected virtual void Start()
     {
@@ -100,7 +102,21 @@ public class CharacterStats : MonoBehaviour
             ApplyIgniteDamage();
 
         if (currentHealth > GetMaxHealthValue())
-                currentHealth = GetMaxHealthValue();
+            currentHealth = GetMaxHealthValue();
+    }
+
+    public void makeVulnerable(float _amount, float _duration)
+    {
+        vulnerabilityAmount = _amount;
+        StartCoroutine(VulnereableForCoroutine(_duration));
+    }
+
+    private IEnumerator VulnereableForCoroutine(float _duration)
+    {
+        vulnerable = true;
+        yield return new WaitForSeconds(_duration);
+        vulnerable = false;
+        vulnerabilityAmount = 0f;
     }
 
     public virtual void IncreaseStatBy(int _modifier, float _duration, Stat _statToModify)
@@ -129,12 +145,12 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    public virtual void DoDamage(CharacterStats _targetStats, bool _knockback)
+    public virtual void DoDamage(CharacterStats _targetStats, bool _knockback, float _damagePercentage = 1f)
     {
         if (TargetCanAvoidAttack(_targetStats))
             return;
 
-        int totalDamage = GetTotalDamage();
+        int totalDamage = Mathf.RoundToInt(GetTotalDamage() * _damagePercentage);
 
         if (CanCrit())
         {
@@ -170,7 +186,7 @@ public class CharacterStats : MonoBehaviour
     
     public virtual void DecreaseHealthBy(int _damage)
     {
-        currentHealth -= _damage;
+        currentHealth -= Mathf.RoundToInt(_damage * (1 + vulnerabilityAmount));
 
         onHealthChanged();
     }
@@ -314,6 +330,11 @@ public class CharacterStats : MonoBehaviour
 
     public int GetMaxHealthValue() => maxHealth.GetValue() + vitality.GetValue() * 5;
     
+    public virtual void OnEvasion()
+    {
+
+    }
+
     private bool TargetCanAvoidAttack(CharacterStats _targetStats)
     {
         int totalEvasion = _targetStats.evasion.GetValue() + _targetStats.agility.GetValue();
@@ -323,6 +344,7 @@ public class CharacterStats : MonoBehaviour
 
         if (Random.Range(0, 100) < totalEvasion)
         {
+            _targetStats.OnEvasion();
             return true;
         }
         return false;

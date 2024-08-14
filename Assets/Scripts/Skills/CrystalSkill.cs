@@ -10,20 +10,28 @@ public class CrystalSkill : Skill
     [SerializeField] private float crystalDuration;
     private GameObject currentCrystal;
 
-    [Header("Crsytal Mirage")]
+    [Header("Crystal Simple")]
+    [SerializeField] private UI_SkillTreeSlot UnlockCrystalButton;
+    public bool crystalUnlocked { get; private set; }
+
+    [Header("Crystal Mirage")]
+    [SerializeField] private UI_SkillTreeSlot unlockCloneButton;
     [SerializeField] private bool cloneInsteadOfCrystal;
 
     [Header("Explosive Crystal")]
+    [SerializeField] private UI_SkillTreeSlot unlockExplosiveButton;
     [SerializeField] private bool canExplode;
     [SerializeField] private float growSpeed;
     [SerializeField] private float maxSize;
 
     [Header("Moving Crsytal")]
+    [SerializeField] private UI_SkillTreeSlot unlockMovingCrystalButton;
     [SerializeField] private bool canMoveToEnemy;
     [SerializeField] private float moveSpeed;
     [SerializeField] private bool moveTowardsClosestEnemy;
 
     [Header("Multi Stacking Crystal")]
+    [SerializeField] private UI_SkillTreeSlot unlockMultiCrystalButton;
     [SerializeField] private bool canUseMultiStacks;
     [SerializeField] private int amountOfStacks;
     [SerializeField] private float multiStackCooldown;
@@ -70,16 +78,55 @@ public class CrystalSkill : Skill
 
     public void CreateCrystal()
     {
-        currentCrystal = Instantiate(crystalPrebaf, player.transform.position, Quaternion.identity);
-        CrystalSkillController currentCrystalScript = currentCrystal.GetComponent<CrystalSkillController>();
+        if (crystalUnlocked)
+        {
+            currentCrystal = Instantiate(crystalPrebaf, player.transform.position, Quaternion.identity);
+            CrystalSkillController currentCrystalScript = currentCrystal.GetComponent<CrystalSkillController>();
 
-        currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, growSpeed, maxSize, moveTowardsClosestEnemy, player);
+            currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, growSpeed, maxSize, moveTowardsClosestEnemy, player);
+        }
     }
 
     protected override void Start()
     {
         base.Start();
         RefillCrystal();
+
+        UnlockCrystalButton.OnFullyFilled += UnlockCrystal;
+        unlockCloneButton.OnFullyFilled += UnlockCloneInsteadOfCrystal;
+        unlockExplosiveButton.OnFullyFilled += UnlockExplosiveCrystal;
+        unlockMovingCrystalButton.OnFullyFilled += UnlockMovingCrystal;
+        unlockMultiCrystalButton.OnFullyFilled += UnlockMultiCrystal;
+    }
+
+    private void UnlockCrystal()
+    {
+        if (UnlockCrystalButton.unlocked)
+            crystalUnlocked = true;
+    }
+
+    private void UnlockCloneInsteadOfCrystal()
+    {
+        if (unlockCloneButton.unlocked)
+            cloneInsteadOfCrystal = true;
+    }
+
+    private void UnlockExplosiveCrystal()
+    {
+        if (unlockExplosiveButton.unlocked)
+            canExplode = true;
+    }
+
+    private void UnlockMovingCrystal()
+    {
+        if (unlockMovingCrystalButton.unlocked)
+            canMoveToEnemy = true;
+    }
+
+    private void UnlockMultiCrystal()
+    {
+        if (unlockMultiCrystalButton.unlocked)
+            canUseMultiStacks = true;
     }
 
     protected override void Update()

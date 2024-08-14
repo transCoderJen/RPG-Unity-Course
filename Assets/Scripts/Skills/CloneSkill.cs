@@ -6,21 +6,60 @@ public class CloneSkill : Skill
     [Header("Clone Info")]
     [SerializeField] private GameObject clonePrefab;
     [SerializeField] private float cloneDuration;
-    [Space]
-    [SerializeField] private bool canAttack;
+    
+    [Header("Clone Attack")]
+    [SerializeField] private UI_SkillTreeSlot cloneAttackUnlockButton;
+    public bool canAttack { get; private set; }
 
-    [Header("Clone Creation")]
-    [SerializeField] private bool createCloneOnDashStart;
-    [SerializeField] private bool createCloneOnDashOver;
-    [SerializeField] private bool createCloneOnCounter;
+    [Header("Aggressive Mirage")]
+    [SerializeField] private UI_SkillTreeSlot aggressiveMirageUnlockButton;
+    public bool aggressiveMirageUnlocked;
 
-    [Header("Clone Duplication")]
-    [SerializeField] private bool canDuplicateClone;
+    [Header("Multiple Clone")]
+    [SerializeField] private UI_SkillTreeSlot multipleCloneUnlockButton;
+    public bool canDuplicateClone { get; private set; }
     [SerializeField] private int duplicationChancePercent;
 
     [Header("Crystal Spawn")]
-    [SerializeField] private bool canSpawnCrystal;
+    [SerializeField] private UI_SkillTreeSlot crystalUnlockButton;
+    public bool canSpawnCrystal { get; private set; }
     [SerializeField] private GameObject crystalPrefab;
+
+    protected override void Start()
+    {
+        base.Start();
+
+        cloneAttackUnlockButton.OnFullyFilled += UnlockCloneAttack;
+        aggressiveMirageUnlockButton.OnFullyFilled += UnlockAggressiveMirage;
+        multipleCloneUnlockButton.OnFullyFilled += UnlockMultipleMirage;
+        crystalUnlockButton.OnFullyFilled += UnlockCrystal;
+    }
+
+    #region Unlocks
+    private void UnlockCloneAttack()
+    {
+        if (cloneAttackUnlockButton.unlocked)
+            canAttack = true;
+    }
+
+    private void UnlockAggressiveMirage()
+    {
+        if (aggressiveMirageUnlockButton.unlocked)
+            aggressiveMirageUnlocked = true;
+    }
+
+    private void UnlockMultipleMirage()
+    {
+        if (multipleCloneUnlockButton.unlocked)
+            canDuplicateClone = true;
+    }
+
+    private void UnlockCrystal()
+    {
+        if (crystalUnlockButton.unlocked)
+            canSpawnCrystal = true;
+    }
+    #endregion
 
     public void CreateClone(Transform _clonePosition, Vector3 _offset)
     {
@@ -36,23 +75,12 @@ public class CloneSkill : Skill
 
     public bool CanSpawnCrystal() => canSpawnCrystal;
     
-    public void CreateCloneOnDashStart()
-    {
-        if(createCloneOnDashStart)
-            CreateClone(player.transform, Vector3.zero);
-    }
+    
 
-    public void CreateCloneOnDashOver()
-    {
-        if(createCloneOnDashOver)
-            CreateClone(player.transform, Vector3.zero);
-    }
-
-    public void CreateCloneOnCounter(Transform _clonePosition, Vector3 _offset)
+    public void CreateCloneWithDelay(Transform _clonePosition, Vector3 _offset)
     {
         StartCoroutine(Wait(.4f));
-        if(createCloneOnCounter)
-            CreateClone(_clonePosition, _offset);
+        CreateClone(_clonePosition, _offset);
     }
 
     private IEnumerator Wait(float _seconds){

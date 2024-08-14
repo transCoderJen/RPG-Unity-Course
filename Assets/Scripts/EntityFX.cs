@@ -28,7 +28,6 @@ public class EntityFX : MonoBehaviour
     public void MakeTransparent(bool _transparent)
     {
         CanvasGroup slider = GetComponentInChildren<CanvasGroup>();
-        Debug.Log(slider == null);
 
         if (_transparent)
         {
