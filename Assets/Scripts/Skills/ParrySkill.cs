@@ -44,7 +44,10 @@ public class ParrySkill : Skill
     private void UnlockParry()
     {
         if (parryUnlockButton.unlocked)
+        {
             parryUnlocked = true;
+            inGameUI.UnlockParry();
+        }
     }
 
     private void UnlockRestore()

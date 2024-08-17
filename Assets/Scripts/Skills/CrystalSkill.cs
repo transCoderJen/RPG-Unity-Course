@@ -99,10 +99,14 @@ public class CrystalSkill : Skill
         unlockMultiCrystalButton.OnFullyFilled += UnlockMultiCrystal;
     }
 
+    #region Unlock Skills
     private void UnlockCrystal()
     {
         if (UnlockCrystalButton.unlocked)
+        {
+            inGameUI.UnlockCrystal();
             crystalUnlocked = true;
+        }
     }
 
     private void UnlockCloneInsteadOfCrystal()
@@ -128,6 +132,7 @@ public class CrystalSkill : Skill
         if (unlockMultiCrystalButton.unlocked)
             canUseMultiStacks = true;
     }
+    #endregion
 
     protected override void Update()
     {

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor.Il2Cpp;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
 public enum EquipmentType
@@ -109,7 +111,7 @@ public class ItemData_Equipment : ItemData
     {
         sb.Length = 0;
         descriptionLength = 0;
-
+        
         AddItemDescription(strength, "Strength");
         AddItemDescription(agility, "Agility");
         AddItemDescription(intelligence, "Intelligence");
@@ -130,6 +132,25 @@ public class ItemData_Equipment : ItemData
 
         AddItemDescription(1000000, description);
 
+        for (int i = 0; i < itemEffects.Length; i++)
+        {
+            if (itemEffects[i].effectDescription.Length > 0)
+            {
+                sb.AppendLine();
+                sb.Append(itemEffects[i].effectDescription);
+                // Count the number of lines in the effectDescription
+                int lines = itemEffects[i].effectDescription.Split('\n').Length;
+                descriptionLength += lines;
+            }
+        }
+
+        if (itemCooldown > 0)
+        {
+            sb.AppendLine();
+            sb.Append("Cooldown: " + itemCooldown + " seconds");
+            descriptionLength++;
+        }
+
         if (descriptionLength < 5)
         {
             for (int i=0; i < 5 - descriptionLength; i++)
@@ -137,6 +158,7 @@ public class ItemData_Equipment : ItemData
                 sb.AppendLine();
             }
         }
+
         return sb.ToString();
     }
 
@@ -144,20 +166,24 @@ public class ItemData_Equipment : ItemData
     {
         if (_value != 0)
         {
-            
             sb.AppendLine();
             
             if (_value == 1000000)
             {
                 sb.Append(_name);
+                int lines = _name.Split('\n').Length;
+                descriptionLength += lines;
             }
             else if (_value > 0)
+            {
                 if (percent)
                     sb.Append("+ " + _value + "% " + _name);
                 else
                     sb.Append("+ " + _value + " " + _name);
+                
+                descriptionLength++;
+            }
             
-            descriptionLength++;
         }
     }
 }

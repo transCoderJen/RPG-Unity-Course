@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI : MonoBehaviour
@@ -8,6 +9,7 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject skillTreeUI;
     [SerializeField] private GameObject craftUI;
     [SerializeField] private GameObject optionsUI;
+    [SerializeField] private GameObject inGameUI;
 
     public UI_ItemTooltip itemTooltip;
     public UI_StatTooltip statTooltip;
@@ -16,12 +18,15 @@ public class UI : MonoBehaviour
     
     private void Start()
     {
-        SwitchTo(null);
-        
+        SwitchTo(inGameUI);
+        characterUI.gameObject.SetActive(true);
+        skillTreeUI.gameObject.SetActive(true);
         // Ensure tooltip windows are always inactive at start
         itemTooltip.gameObject.SetActive(false);
         statTooltip.gameObject.SetActive(false);
-        
+
+        characterUI.gameObject.SetActive(false);
+        skillTreeUI.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -54,9 +59,21 @@ public class UI : MonoBehaviour
         if (_menu != null && _menu.activeSelf)
         {
             _menu.SetActive(false);
+            CheckForInGameUI();
             return;
         }
 
         SwitchTo(_menu);
+    }
+
+    public void CheckForInGameUI()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeSelf)
+                return;
+        }
+
+        SwitchTo(inGameUI);
     }
 }

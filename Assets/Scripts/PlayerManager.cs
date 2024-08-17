@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     public Player player;
 
-    public int currency;
+    [SerializeField] private int currency;
 
     private void Awake()
     {
@@ -28,4 +28,6 @@ public class PlayerManager : MonoBehaviour
         currency -= _price;
         return true;
     }
+
+    public int GetCurrency() => currency;
 }

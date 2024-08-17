@@ -31,10 +31,14 @@ public class DashSkill : Skill
         cloneOnArrivalUnlockButton.OnFullyFilled += UnlockCloneOnArrival;
     }
 
+    #region Unlock Skills
     private void UnlockDash()
     {
         if (dashUnlockButton.unlocked)
+        {
             dashUnlocked = true;
+            inGameUI.UnlockDash();
+        }
     }
 
     private void UnlockCloneOnDash()
@@ -48,6 +52,7 @@ public class DashSkill : Skill
         if (cloneOnArrivalUnlockButton.unlocked)
             cloneOnArrivalUnlocked = true;
     }
+    #endregion
 
     public void CloneOnDash()
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_StatTooltip : MonoBehaviour
+public class UI_StatTooltip : UI_Tooltip
 {
     [SerializeField] private TextMeshProUGUI statDescription;
     public void ShowToolTip(StatType statType)
@@ -37,6 +37,7 @@ public class UI_StatTooltip : MonoBehaviour
         else if (statType == StatType.lightningDamage)
             statDescription.text = "Lightning Damage: Reduces the target's accuracy by 20% and deals damage.\n\n*Only the highest elemental value is applied";
         
+        AdjustPosition();
         gameObject.SetActive(true);
     }
 

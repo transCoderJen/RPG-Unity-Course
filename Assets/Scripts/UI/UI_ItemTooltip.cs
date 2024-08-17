@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_ItemTooltip : MonoBehaviour
+public class UI_ItemTooltip : UI_Tooltip
 {
     [SerializeField] private TextMeshProUGUI itemNameText;
     [SerializeField] private TextMeshProUGUI itemType;
@@ -15,6 +15,7 @@ public class UI_ItemTooltip : MonoBehaviour
         itemType.text = item.equipmentType.ToString();
         itemDescription.text = item.GetDescription();
 
+        AdjustPosition();
         gameObject.SetActive(true);
     }
 

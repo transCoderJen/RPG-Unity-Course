@@ -26,6 +26,7 @@ public class DodgeSkill : Skill
         dodgeMirageUnlockButton.OnFullyFilled += UnlockDodgeMirage;
     }
 
+    #region Unlock Skills
     private void UnlockDodge()
     {
         if (dodgeUnlockButton.unlocked)
@@ -41,6 +42,7 @@ public class DodgeSkill : Skill
         if (dodgeMirageUnlockButton.unlocked)
             dodgeMirageUnlocked = true;
     }
+    #endregion
 
     public void CreateMirageOnDodge()
     {

@@ -15,10 +15,15 @@ public class UI_HealthBar : MonoBehaviour
         slider = GetComponentInChildren<Slider>();
         myStats = GetComponentInParent<CharacterStats>();
 
-        entity.onFlipped += FlipUI;
-        myStats.onHealthChanged += UpdateHealthUI;
+        if (entity != null)
+            entity.onFlipped += FlipUI;
+        if (myStats != null)
+        {
+            myStats.onHealthChanged += UpdateHealthUI;
 
-        UpdateHealthUI();
+            UpdateHealthUI();
+
+        }
     }
 
     private void UpdateHealthUI()
@@ -34,7 +39,9 @@ public class UI_HealthBar : MonoBehaviour
 
     private void OnDisable()
     {
-        entity.onFlipped -= FlipUI;
-        myStats.onHealthChanged -= UpdateHealthUI;
+        if (entity != null)
+            entity.onFlipped -= FlipUI;
+        if (myStats != null)
+            myStats.onHealthChanged -= UpdateHealthUI;
     }
 }

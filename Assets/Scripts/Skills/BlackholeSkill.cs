@@ -23,6 +23,7 @@ public class BlackholeSkill : Skill
         if (blackholeUnlockButton.unlocked)
         {
             blackholeUnlocked = true;
+            inGameUI.UnlockBlackhole();
         }
     }
 

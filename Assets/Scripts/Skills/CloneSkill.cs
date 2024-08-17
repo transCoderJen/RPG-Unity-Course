@@ -35,7 +35,7 @@ public class CloneSkill : Skill
         crystalUnlockButton.OnFullyFilled += UnlockCrystal;
     }
 
-    #region Unlocks
+    #region Unlock Skills
     private void UnlockCloneAttack()
     {
         if (cloneAttackUnlockButton.unlocked)

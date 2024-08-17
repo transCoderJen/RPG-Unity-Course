@@ -83,6 +83,7 @@ public class SwordSkill : Skill
         {
             swordUnlocked = true;
             swordType = SwordType.Regular;
+            inGameUI.UnlockSword();
         }
     }
 

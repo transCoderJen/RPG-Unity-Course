@@ -292,6 +292,14 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public float FlaskCooldown() {
+        ItemData_Equipment flask = GetEquipment(EquipmentType.Flask);
+        if (flask == null)
+            return 0;
+        else
+            return flask.itemCooldown;
+    }
+
     public bool canUseArmor()
     {
         ItemData_Equipment armor = GetEquipment(EquipmentType.Armor);
