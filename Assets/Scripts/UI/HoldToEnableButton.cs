@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -12,7 +13,6 @@ public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUp
 
     [SerializeField] private Image fillImage;  // Reference to the fill image
     [SerializeField] private Image parentImage;
-    
 
     void Start()
     {
@@ -39,7 +39,10 @@ public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUp
             if (holdDuration >= holdTime)
             {
                 button.interactable = true;
-                parentImage.color = Color.white;
+
+                button.GetComponentInParent<UI_CraftWindow>()?.CraftItem();
+                button.GetComponent<UI_SkillTreeSlot>()?.UnlockSkillSlot();
+
                 isHolding = false;  // Stop holding after enabling the button
             }
         }
@@ -56,6 +59,7 @@ public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         isHolding = true;
         holdDuration = 0.0f;
+
     }
 
     public void OnPointerUp(PointerEventData eventData)

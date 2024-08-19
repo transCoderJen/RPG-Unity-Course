@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISaveManager
 {
     protected UI ui;
     private Image skillImage;
@@ -18,6 +18,7 @@ public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
 
     public bool unlocked;
+    public bool startActive;
 
     [SerializeField] private UI_SkillTreeSlot[] shouldBeUnlocked;
     [SerializeField] private UI_SkillTreeSlot[] shouldBeLocked;
@@ -37,21 +38,33 @@ public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void Awake()
     {
-        GetComponent<Button>().onClick.AddListener(() => UnlockSkillSlot());
+        
     }
 
     private void Start()
     {
-        skillImage.color = lockedSkillColor;
-
+        if (!startActive)
+            gameObject.SetActive(false);
+        
+        if (startActive)
+            skillImage.color = lockedSkillColor;
 
         ui = GetComponentInParent<UI>();
+
+        if(unlocked)
+        {
+            bool noCost = true;
+            UnlockSkillSlot(noCost);
+        }
     }
 
-    public void UnlockSkillSlot()
+    public void UnlockSkillSlot(bool noCost = false)
     {
-        if (!PlayerManager.instance.HaveEnoughMoney(skillPrice))
-            return;
+        if(!noCost)
+        {
+            if (!PlayerManager.instance.HaveEnoughMoney(skillPrice))
+                return;
+        }
             
         for (int i = 0; i < shouldBeUnlocked.Length; i++)
         {
@@ -75,11 +88,13 @@ public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
         OnFullyFilled?.Invoke();
 
         skillImage.color = Color.white;
-        // GetComponentInChildren<UI_SkillTreeSlot>().gameObject.SetActive(false);
+        GetComponentInChildren<UI_SkillTreeSlot>().gameObject.SetActive(false);
 
         for (int i = 0; i < unlocks.Length; i++)
         {
             unlocks[i].gameObject.SetActive(true);
+            unlocks[i].startActive = true;
+            unlocks[i].skillImage.color = lockedSkillColor;
         }
 
          for (int i = 0; i < locks.Length; i++)
@@ -96,5 +111,26 @@ public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerExit(PointerEventData eventData)
     {
         ui.skillTooltip.HideToolTip();
+    }
+
+    public void LoadData(GameData _data)
+    {
+        if(_data.skillTree.TryGetValue(skillName, out bool value))
+        {
+            unlocked = value;
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        if(_data.skillTree.TryGetValue(skillName, out bool value))
+        {
+            _data.skillTree.Remove(skillName);
+            _data.skillTree.Add(skillName, unlocked);
+        }
+        else
+        {
+            _data.skillTree.Add(skillName, unlocked);
+        }
     }
 }

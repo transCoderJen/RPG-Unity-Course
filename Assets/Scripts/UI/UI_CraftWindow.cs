@@ -14,15 +14,17 @@ public class UI_CraftWindow : MonoBehaviour
 
     [SerializeField] private Image[] materialImage;
     public ItemData_Equipment defaultItem;
-
+    private ItemData_Equipment selectedItem;
 
     private void Start()
     {
         SetupCraftWindow(defaultItem);
+        selectedItem = defaultItem;
     }
 
     public void SetupCraftWindow(ItemData_Equipment _data)
     {
+        selectedItem = _data;
         craftButton.onClick.RemoveAllListeners();
 
         for (int i = 0; i < materialImage.Length; i++)
@@ -48,6 +50,11 @@ public class UI_CraftWindow : MonoBehaviour
 
         itemDescription.text = _data.GetDescription();
 
-        craftButton.onClick.AddListener(() => Inventory.instance.CanCraft(_data, _data.craftingMaterials));
+        
+    }
+
+    public void CraftItem()
+    {
+        Inventory.instance.CanCraft(selectedItem, selectedItem.craftingMaterials);
     }
 }

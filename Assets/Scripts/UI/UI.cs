@@ -31,6 +31,12 @@ public class UI : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            TabOrEscapePressed(optionsUI);
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+            TabOrEscapePressed(characterUI);
+
         if (Input.GetKeyDown(KeyCode.C))
             SwitchWithKeyTo(characterUI);
 
@@ -45,13 +51,33 @@ public class UI : MonoBehaviour
     }
     public void SwitchTo(GameObject _menu)
     {
-        for (int i= 0; i < transform.childCount; i++)
+        DeactivateAllMenus();
+
+        if (_menu != null)
+            _menu.SetActive(true);
+    }
+
+    private void DeactivateAllMenus()
+    {
+        for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
+    }
 
-        if(_menu != null)
-            _menu.SetActive(true);
+    public void TabOrEscapePressed(GameObject _menu)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeSelf && !inGameUI.activeSelf)
+            {
+                DeactivateAllMenus();
+                CheckForInGameUI();
+                return;
+            }
+        }
+
+        SwitchTo(_menu);
     }
 
     public void SwitchWithKeyTo(GameObject _menu)
