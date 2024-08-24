@@ -6,6 +6,7 @@ public class PlayerDeadState : PlayerState
 {
     public PlayerDeadState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _stateMachine, _animBoolName)
     {
+
     }
 
     public override void AnimationFinishedTrigger()
@@ -16,6 +17,8 @@ public class PlayerDeadState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.isDead = true;
+        GameObject.Find("Canvas").GetComponent<UI>().SwitchOnEndScreen();
     }
 
     public override void Exit()

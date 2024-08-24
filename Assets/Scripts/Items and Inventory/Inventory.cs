@@ -61,8 +61,8 @@ public class Inventory : MonoBehaviour, ISaveManager
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
         statSlot = statSlotParent.GetComponentsInChildren<UI_StatSlot>();
-        AddStartingItems();
-
+        
+        Invoke("AddStartingItems", .1f);
     }
 
     private void AddStartingItems()
@@ -88,9 +88,12 @@ public class Inventory : MonoBehaviour, ISaveManager
             return;
         }
 
-        for (int i = 0; i < startingEquipment.Count; i++)
+        if (!SaveManager.instance.HasSavedData())
         {
-            AddItem(startingEquipment[i]);
+            for (int i = 0; i < startingEquipment.Count; i++)
+            {
+                AddItem(startingEquipment[i]);
+            }
         }
     }
 
@@ -353,9 +356,12 @@ public class Inventory : MonoBehaviour, ISaveManager
             {
                 if(item != null && item.itemId == pair.Key)
                 {
-                    InventoryItem itemToLoad = new InventoryItem(item);
-                    itemToLoad.stackSize = pair.Value;
+                    InventoryItem itemToLoad = new InventoryItem(item)
+                    {
+                        stackSize = pair.Value
+                    };
 
+                    Debug.Log(itemToLoad.data.name + " Loaded");
                     loadedItems.Add(itemToLoad);
                 }
             }
@@ -381,6 +387,7 @@ public class Inventory : MonoBehaviour, ISaveManager
         foreach(KeyValuePair<ItemData, InventoryItem> pair in inventoryDictionary)
         {
             _data.inventory.Add(pair.Key.itemId, pair.Value.stackSize);
+            Debug.Log(pair.Value.data.name + " Saved");
         }
 
         foreach(KeyValuePair<ItemData, InventoryItem> pair in stashDictionary)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.IO;
+using UnityEngine.Timeline;
 
 public class SaveManager : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField] private string fileName;
     [SerializeField] private bool encryptData;
-    private GameData gameData;
+    [HideInInspector]
+    public GameData gameData;
     private List<ISaveManager> saveManagers;
     private FileDataHandler dataHandler;
 

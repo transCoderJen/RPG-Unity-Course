@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,7 @@ public class Entity : MonoBehaviour
 
     public int facingDir {get; private set; } = 1;
     protected bool facingRight = true;
+    public bool isDead = false;
 
     public System.Action onFlipped = delegate {};
 
@@ -51,7 +53,8 @@ public class Entity : MonoBehaviour
 
     protected virtual void Update()
     {
-
+        if (transform.position.y < -20)
+            Destroy(this.gameObject);
     }
 
     public virtual void SlowEntityBy(float _slowPercentage, float _slowDuration)

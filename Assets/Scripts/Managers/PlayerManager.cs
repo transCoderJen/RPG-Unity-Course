@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour, ISaveManager
     public static PlayerManager instance;
     public Player player;
 
-    [SerializeField] private int currency;
+    [SerializeField] public int currency;
 
     private void Awake()
     {

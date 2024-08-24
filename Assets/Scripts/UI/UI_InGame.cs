@@ -17,9 +17,14 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private Image blackholeImage;
     [SerializeField] private Image flaskImage;
 
-    [SerializeField] private TextMeshProUGUI currentSouls;
-    
     private SkillManager skills;
+
+    [Header("Souls Info")]
+    [SerializeField] private TextMeshProUGUI currentSouls;
+    [SerializeField] private float soulsAmount;
+    [SerializeField] private float increaseRate = 1000;
+    private bool areSoulsIncreasing;
+    
 
     void Start()
     {
@@ -69,7 +74,7 @@ public class UI_InGame : MonoBehaviour
 
     void Update()
     {
-        currentSouls.text = PlayerManager.instance.GetCurrency().ToString("#,#");
+        UpdateSoulsUI();
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
             SetCooldownOf(dashImage);
@@ -80,13 +85,13 @@ public class UI_InGame : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
             SetCooldownOf(blackholeImage);
 
-        if(Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))
             SetCooldownOf(crystalImage);
 
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
             SetCooldownOf(swordImage);
-        
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
             SetCooldownOf(flaskImage);
 
         if (skills.dash.dashUnlocked)
@@ -98,6 +103,36 @@ public class UI_InGame : MonoBehaviour
         CheckCooldownOf(crystalImage, skills.crystal.cooldown);
         CheckCooldownOf(flaskImage, Inventory.instance.FlaskCooldown());
     }
+
+    private void UpdateSoulsUI()
+    {
+        float targetSouls = PlayerManager.instance.GetCurrency();
+
+        if (soulsAmount < targetSouls)
+        {
+            if(!areSoulsIncreasing)
+                // Calculate the dynamic increase rate
+                increaseRate = (targetSouls - soulsAmount) / 1.5f;
+            
+            areSoulsIncreasing = true;
+            // Increase the soulsAmount over time
+            soulsAmount += Time.deltaTime * increaseRate;
+
+            // Ensure it doesn't exceed the target
+            if (soulsAmount > targetSouls)
+            {
+                soulsAmount = targetSouls;
+            }
+        }
+        else
+        {
+            areSoulsIncreasing = false;
+            soulsAmount = targetSouls;
+        }
+
+        currentSouls.text = ((int)soulsAmount).ToString();
+    }
+
 
     private void UpdateHealthUI()
     {
