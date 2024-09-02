@@ -22,6 +22,9 @@ public class PlayerAimSwordState : PlayerState
 
     public override void Update()
     {
+        // if (player.ui.IsMenuOpen())
+        //     return;
+
         base.Update();
         player.ZeroVelocity();
         

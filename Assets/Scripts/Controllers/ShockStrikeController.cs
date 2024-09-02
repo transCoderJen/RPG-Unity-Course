@@ -54,7 +54,12 @@ public class ShockStrikeController : MonoBehaviour
 
     private void DamageAndSelfDestroy()
     {
-        targetStats.TakeDamage(damage, true);
+        bool knockback = true;
+
+        if (targetStats.GetComponent<Player>() != null)
+            knockback = false;
+             
+        targetStats.TakeDamage(damage, knockback);
         Destroy(gameObject, .4f);
     }
 }

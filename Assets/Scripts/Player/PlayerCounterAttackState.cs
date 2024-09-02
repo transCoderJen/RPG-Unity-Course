@@ -37,7 +37,7 @@ public class PlayerCounterAttackState : PlayerState
                 {
                     stateTimer = 10;
                     player.anim.SetBool("SuccessfulCounterAttack", true);
-                    
+                    AudioManager.instance.PlaySFX(SFXSounds.attack1, null);   
                     SkillManager.instance.parry.UseSkill();
 
                     player.skill.parry.MakeMirageOnParry(hit.transform, new Vector3(2.5f * player.facingDir, 0));

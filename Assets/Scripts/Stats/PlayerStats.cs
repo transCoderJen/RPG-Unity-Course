@@ -13,8 +13,11 @@ public class PlayerStats : CharacterStats
         player = GetComponent<Player>();
     }
 
-    public override void TakeDamage(int _damage, bool _knockback = true)
+    public override void TakeDamage(int _damage, bool _knockback = false)
     {
+        if (_damage >= player.stats.GetMaxHealthValue() * .3f)
+            _knockback = true;
+
         base.TakeDamage(_damage, _knockback);
     }
 

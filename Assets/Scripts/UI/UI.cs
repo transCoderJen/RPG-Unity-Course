@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour, ISaveManager
 {
     [Header("End Screen")]
     [SerializeField] private UI_FadeScreen fadeScreen;
@@ -25,11 +27,25 @@ public class UI : MonoBehaviour
     public UI_StatTooltip statTooltip;
     public UI_CraftWindow craftWindow;
     public UI_SkillTooltip skillTooltip;
+
+    [SerializeField] private UI_VolumeSlider[] volumeSettings;
     
     private void Awake()
     {
         fadeScreen.gameObject.SetActive(true);  
     }
+
+    public bool IsMenuOpen()
+    {
+        for (int i = 0; i < menuItems.Length; i++)
+        {
+            if (menuItems[i].gameObject.activeSelf)
+                return true;
+        }
+
+        return false;
+    }
+
     private void Start()
     {
         SwitchTo(inGameUI);
@@ -46,6 +62,11 @@ public class UI : MonoBehaviour
 
     private void Update()
     {
+        if (IsMenuOpen())
+            Time.timeScale = 0f;
+        else
+            Time.timeScale = 1f;
+        
         if (PlayerManager.instance.player.isDead)
             return;
 
@@ -140,5 +161,27 @@ public class UI : MonoBehaviour
     public void RestartGameButton()
     {
         GameManager.instance.RestartScene();
+    }
+
+    public void LoadData(GameData _data)
+    {
+        foreach(KeyValuePair<string, float> pair in _data.volumeSettings)
+        {
+            foreach(UI_VolumeSlider item in volumeSettings)
+            {
+                if (item.parameter == pair.Key)
+                    item.LoadSlider(pair.Value);
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.volumeSettings.Clear();
+
+        foreach (UI_VolumeSlider item in volumeSettings)
+        {
+            _data.volumeSettings.Add(item.parameter, item.slider.value);
+        }
     }
 }

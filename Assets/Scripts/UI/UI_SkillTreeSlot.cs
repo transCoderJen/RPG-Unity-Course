@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISaveManager
+public class UI_SkillTreeSlot : MonoBehaviour, ISaveManager
 {
     protected UI ui;
     private Image skillImage;
@@ -58,6 +59,13 @@ public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
+    public int GetSkillPrice() => skillPrice;
+
+    public string GetSkillName() => skillName;
+
+    public string GetSkillDescription() => skillDescription;
+
+
     public void UnlockSkillSlot(bool noCost = false)
     {
         if(!noCost)
@@ -101,16 +109,6 @@ public class UI_SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             locks[i].gameObject.SetActive(false);
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        ui.skillTooltip.ShowToolTip(skillName, skillDescription, skillPrice);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        ui.skillTooltip.HideToolTip();
     }
 
     public void LoadData(GameData _data)

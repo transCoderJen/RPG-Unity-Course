@@ -361,7 +361,6 @@ public class Inventory : MonoBehaviour, ISaveManager
                         stackSize = pair.Value
                     };
 
-                    Debug.Log(itemToLoad.data.name + " Loaded");
                     loadedItems.Add(itemToLoad);
                 }
             }
@@ -387,7 +386,6 @@ public class Inventory : MonoBehaviour, ISaveManager
         foreach(KeyValuePair<ItemData, InventoryItem> pair in inventoryDictionary)
         {
             _data.inventory.Add(pair.Key.itemId, pair.Value.stackSize);
-            Debug.Log(pair.Value.data.name + " Saved");
         }
 
         foreach(KeyValuePair<ItemData, InventoryItem> pair in stashDictionary)

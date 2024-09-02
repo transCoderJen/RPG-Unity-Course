@@ -88,7 +88,13 @@ public class Player : Entity
 
     protected override void Update()
     {
+        if (ui.IsMenuOpen())
+            return;
+            
         base.Update();
+        if (transform.position.y < -20)
+            stateMachine.ChangeState(deadState);
+            
         stateMachine.currentState.Update();
         CheckForDashInput();
 

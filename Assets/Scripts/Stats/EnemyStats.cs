@@ -67,6 +67,7 @@ public class EnemyStats : CharacterStats
     protected override void Die()
     {
         base.Die();
+        AudioManager.instance.PlaySFX(SFXSounds.attack3, null);
         enemy.Die();
 
         myDropSystem.GenerateDrop();

@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class Entity : MonoBehaviour
 {
+
     #region Components
+    public UI ui { get; private set; }
     public Animator anim { get; private set; }
     public Rigidbody2D rb {get; private set; }
     public EntityFX fx { get; private set; }
@@ -28,6 +30,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsGround;
+    [SerializeField] protected LayerMask whatIsPlatform;
     #endregion
 
     public int facingDir {get; private set; } = 1;
@@ -49,12 +52,12 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<CharacterStats>();
         cd = GetComponent<CapsuleCollider2D>();
+        ui = GameObject.Find("Canvas").GetComponent<UI>();
     }
 
     protected virtual void Update()
     {
-        if (transform.position.y < -20)
-            Destroy(this.gameObject);
+
     }
 
     public virtual void SlowEntityBy(float _slowPercentage, float _slowDuration)
@@ -74,17 +77,25 @@ public class Entity : MonoBehaviour
         if(_knockback)
             StartCoroutine("HitKnockback");
         
-        ZeroVelocity();
+        
     }
 
     protected virtual IEnumerator HitKnockback()
     {
-        isKnocked = true;
+        // if (GetComponent<Player>() != null)
+        //     yield break;
 
-        rb.velocity = new Vector2(knockbackDirection.x * -facingDir, knockbackDirection.y);
+        isKnocked = true;
+        int modifier = 1;
+        if (facingDir == 1 && transform.position.x > PlayerManager.instance.player.transform.position.x ||
+            facingDir == -1 && transform.position.x < PlayerManager.instance.player.transform.position.x)
+            modifier = -1;
+        rb.velocity = new Vector2(knockbackDirection.x * -facingDir * modifier, knockbackDirection.y);
 
         yield return new WaitForSeconds(knockbackDuration);
         isKnocked = false;
+
+        ZeroVelocity();
     }
 
     #region Velocity
@@ -108,6 +119,7 @@ public class Entity : MonoBehaviour
 
     #region Colllision
     public virtual bool IsGroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
+    public virtual bool IsPlatformDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsPlatform);
     public virtual bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDistance , whatIsGround);
 
     protected virtual void OnDrawGizmos()

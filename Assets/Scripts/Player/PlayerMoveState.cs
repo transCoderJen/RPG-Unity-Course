@@ -11,15 +11,24 @@ public class PlayerMoveState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        AudioManager.instance.PlaySFX(SFXSounds.footsteps, null);
     }
 
     public override void Exit()
     {
         base.Exit();
+        AudioManager.instance.StopSFX(SFXSounds.footsteps);
     }
     
     public override void Update()
     {
+        // if (player.ui.IsMenuOpen())
+        // {
+        //     player.ZeroVelocity();
+        //     return;
+        // }
+
+
         base.Update();
 
         player.SetVelocity(xInput * player.moveSpeed, rb.velocity.y);

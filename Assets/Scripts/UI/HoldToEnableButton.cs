@@ -29,7 +29,7 @@ public class HoldToEnableButton : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         if (isHolding)
         {
-            holdDuration += Time.deltaTime;
+            holdDuration += Time.unscaledDeltaTime;
 
             if (fillImage != null)
             {

@@ -30,10 +30,10 @@ public class ItemObject : MonoBehaviour
         if (!Inventory.instance.CanAddEquipment() && itemData.itemType == ItemType.Equipment)
         {
             rb.velocity = new Vector2(5 * PlayerManager.instance.player.facingDir, 7);
-
             return;
         }
 
+        AudioManager.instance.PlaySFX(SFXSounds.itemPickup, null);
         Inventory.instance.AddItem(itemData);
         Destroy(gameObject);
     }

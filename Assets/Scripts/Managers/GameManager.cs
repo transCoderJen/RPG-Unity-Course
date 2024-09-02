@@ -62,8 +62,7 @@ public class GameManager : MonoBehaviour, ISaveManager
             {
                 if (checkpoint.id == pair.Key && pair.Value)
                 {
-                    bool withSaving = false;
-                    checkpoint.ActivateCheckpoint(withSaving);
+                    checkpoint.ActivateCheckpoint();
                 }
             }
         }

@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 using IEnumerator = System.Collections.IEnumerator;
+using UnityEngine.Audio;
 
 public enum StatType
 {
@@ -72,13 +73,20 @@ public class CharacterStats : MonoBehaviour
     public bool isDead { get; private set; }
     public bool vulnerable;
     private float vulnerabilityAmount;
+
+    AudioSource burningAudio;
+    public AudioMixerGroup soundEffectsGroup;
+    public float fadeOutDuration = 1.0f;
     
     protected virtual void Start()
     {
         critPower.SetDefaultValue(150);
         currentHealth = GetMaxHealthValue();
-
         fx = GetComponent<EntityFX>();
+        
+        burningAudio = gameObject.AddComponent<AudioSource>();
+        burningAudio.clip = AudioManager.instance.getSFXAudioSource(SFXSounds.burning).clip;
+        burningAudio.outputAudioMixerGroup = soundEffectsGroup;
     }
 
     protected virtual void Update()
@@ -90,7 +98,10 @@ public class CharacterStats : MonoBehaviour
         shockedTimer -= Time.deltaTime;
 
         if (ignitedTimer <= 0)
+        {
             isIgnited = false;
+            burningAudio.Stop();
+        }
 
         if (chilledTimer <= 0)
             isChilled = false;
@@ -139,9 +150,11 @@ public class CharacterStats : MonoBehaviour
         {
             DecreaseHealthBy(igniteDamage);
             igniteDamageTimer = igniteDamageCooldown;
-
             if (currentHealth < 0 && !isDead)
+            {
+                burningAudio.Stop();
                 Die();
+            }
         }
     }
 
@@ -159,7 +172,6 @@ public class CharacterStats : MonoBehaviour
 
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
         _targetStats.TakeDamage(totalDamage, _knockback);
-
         DoMagicDamage(_targetStats, _knockback);
     }
 
@@ -245,6 +257,7 @@ public class CharacterStats : MonoBehaviour
 
         if (_ignite)
         {
+            burningAudio.Play();
             isIgnited = _ignite;
             ignitedTimer = ailmentCooldown;
 

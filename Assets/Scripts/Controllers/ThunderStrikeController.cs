@@ -12,6 +12,7 @@ public class ThunderStrikeController : MonoBehaviour
             PlayerStats playerStats = PlayerManager.instance.player.stats as PlayerStats;
             EnemyStats enemyTarget = collision.GetComponent<EnemyStats>();
             playerStats.DoMagicDamage(enemyTarget, false);
+            AudioManager.instance.PlaySFX(SFXSounds.thunderStrike, null);
         }
     }
 }

@@ -23,19 +23,15 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Player>() != null)
+        if (collision.GetComponent<Player>() != null && !activated)
         {
-            ActivateCheckpoint(true);
+            ActivateCheckpoint();
         }
     }
 
-    public void ActivateCheckpoint(bool withSaving)
+    public void ActivateCheckpoint()
     {
-        if (withSaving)
-        {
-            // SaveManager.instance.gameData.lastCheckpointId = id;
-            // SaveManager.instance.SaveGame();
-        }
+        AudioManager.instance.PlaySFX(SFXSounds.checkpoint, null);
         activated = true;
         anim.SetBool("active", true);
     }
