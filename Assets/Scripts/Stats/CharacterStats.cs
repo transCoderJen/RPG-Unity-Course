@@ -2,10 +2,6 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
-using Unity.VisualScripting;
-using System.Xml.Serialization;
-using System.Diagnostics;
-using Debug = UnityEngine.Debug;
 using IEnumerator = System.Collections.IEnumerator;
 using UnityEngine.Audio;
 
@@ -71,11 +67,13 @@ public class CharacterStats : MonoBehaviour
 
     public System.Action onHealthChanged = delegate { };
     public bool isDead { get; private set; }
+    public bool isInvincible { get; private set; }
     public bool vulnerable;
     private float vulnerabilityAmount;
 
-    AudioSource burningAudio;
-    public AudioMixerGroup soundEffectsGroup;
+    private Entity entity;
+    // private AudioSource burningAudio;
+    // public AudioMixerGroup soundEffectsGroup;
     public float fadeOutDuration = 1.0f;
     
     protected virtual void Start()
@@ -83,10 +81,10 @@ public class CharacterStats : MonoBehaviour
         critPower.SetDefaultValue(150);
         currentHealth = GetMaxHealthValue();
         fx = GetComponent<EntityFX>();
-        
-        burningAudio = gameObject.AddComponent<AudioSource>();
-        burningAudio.clip = AudioManager.instance.getSFXAudioSource(SFXSounds.burning).clip;
-        burningAudio.outputAudioMixerGroup = soundEffectsGroup;
+        entity = GetComponent<Entity>();
+        // burningAudio = gameObject.AddComponent<AudioSource>();
+        // burningAudio.clip = AudioManager.instance.getSFXAudioSource(SFXSounds.burning).clip;
+        // burningAudio.outputAudioMixerGroup = soundEffectsGroup;
     }
 
     protected virtual void Update()
@@ -100,7 +98,7 @@ public class CharacterStats : MonoBehaviour
         if (ignitedTimer <= 0)
         {
             isIgnited = false;
-            burningAudio.Stop();
+            // burningAudio.Stop();
         }
 
         if (chilledTimer <= 0)
@@ -152,7 +150,7 @@ public class CharacterStats : MonoBehaviour
             igniteDamageTimer = igniteDamageCooldown;
             if (currentHealth < 0 && !isDead)
             {
-                burningAudio.Stop();
+                fx.StopAllFxAudio();
                 Die();
             }
         }
@@ -168,7 +166,10 @@ public class CharacterStats : MonoBehaviour
         if (CanCrit())
         {
             totalDamage = CalculateCriticalDamage(totalDamage);
+            fx.CreateCritHitFx(_targetStats.transform, entity.facingDir);
         }
+
+        fx.CreateHitFx(_targetStats.transform);
 
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
         _targetStats.TakeDamage(totalDamage, _knockback);
@@ -182,6 +183,8 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void TakeDamage(int _damage, bool _knockback)
     {
+        if (isInvincible)
+            return;
         GetComponent<Entity>().DamageEffect(_knockback);
         DecreaseHealthBy(_damage);
 
@@ -207,6 +210,8 @@ public class CharacterStats : MonoBehaviour
     {
         isDead = true;
     }
+
+    public void MakeInvincible(bool _invincible) => isInvincible = _invincible;
 
     #region Magical Damage and Ailments
     public virtual void DoMagicDamage(CharacterStats _targetStats, bool knockback)
@@ -257,7 +262,8 @@ public class CharacterStats : MonoBehaviour
 
         if (_ignite)
         {
-            burningAudio.Play();
+            // burningAudio.Play();
+
             isIgnited = _ignite;
             ignitedTimer = ailmentCooldown;
 

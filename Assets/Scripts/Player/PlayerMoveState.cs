@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundedState
@@ -11,6 +13,8 @@ public class PlayerMoveState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        if (player.IsGroundDetected())
+            player.fx.CreateDustParticles(DustParticleType.Running);
         AudioManager.instance.PlaySFX(SFXSounds.footsteps, null);
     }
 

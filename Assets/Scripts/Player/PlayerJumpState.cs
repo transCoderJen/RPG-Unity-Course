@@ -23,6 +23,7 @@ public class PlayerJumpState : PlayerState
     public override void Update()
     {
         base.Update();
+        CreateTrailAfterImage();
 
         if (rb.velocity.y < 0)
             stateMachine.ChangeState(player.airState);

@@ -24,6 +24,7 @@ public class PlayerCatchSwordState : PlayerState
         player.anim.SetBool("CatchSword", true);
 
         rb.velocity = new Vector2(player.swordReturnImpact * -player.facingDir, rb.velocity.y);
+        player.fx.CreateDustParticles(DustParticleType.Landing);
     }
 
     public override void Exit()

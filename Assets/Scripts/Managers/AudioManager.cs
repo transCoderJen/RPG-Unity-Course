@@ -111,8 +111,11 @@ public class AudioManager : MonoBehaviour
         sfx[index].Stop();
     }
 
-   public void FadeOutSFX(SFXSounds _sfxSound, float _decreaseBy, float _duration)
+    public void FadeOutSFX(SFXSounds _sfxSound, float _decreaseBy, float _duration)
     {
+        if (!gameObject.activeInHierarchy)
+            return;
+
         int index = (int)_sfxSound;
         StartCoroutine(FadeOut(sfx[index], _decreaseBy, _duration));
     }

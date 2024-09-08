@@ -10,6 +10,7 @@ public class UI_FadeScreen : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        anim.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     public void FadeOut() => anim.SetTrigger("fadeOut");

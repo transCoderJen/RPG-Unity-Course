@@ -46,6 +46,7 @@ public class ShockStrikeController : MonoBehaviour
 
             triggered = true;
             anim.SetTrigger("Hit");
+            AudioManager.instance.PlaySFX(SFXSounds.thunderStrike, null);
 
             Invoke("DamageAndSelfDestroy", .2f);
 

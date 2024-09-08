@@ -12,6 +12,7 @@ public class PlayerState
     protected float yInput;
     private string animBoolName;
 
+    protected float afterImageTimer = 0f;
     protected float stateTimer;
     protected bool triggerCalled;
 
@@ -32,6 +33,7 @@ public class PlayerState
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
+        afterImageTimer += Time.deltaTime;
 
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
@@ -47,5 +49,14 @@ public class PlayerState
     public virtual void AnimationFinishedTrigger()
     {
         triggerCalled = true;
+    }
+
+    protected void CreateTrailAfterImage()
+    {
+        if (afterImageTimer > player.fx.afterImageRate)
+        {
+            player.fx.createAfterImageFX(player.transform);
+            afterImageTimer = 0;
+        }
     }
 }

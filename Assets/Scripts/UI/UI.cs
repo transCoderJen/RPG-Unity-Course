@@ -29,10 +29,11 @@ public class UI : MonoBehaviour, ISaveManager
     public UI_SkillTooltip skillTooltip;
 
     [SerializeField] private UI_VolumeSlider[] volumeSettings;
+    private UnscaledInvoke unscaledInvoke;
     
     private void Awake()
     {
-        fadeScreen.gameObject.SetActive(true);  
+        fadeScreen.gameObject.SetActive(true);
     }
 
     public bool IsMenuOpen()
@@ -48,6 +49,8 @@ public class UI : MonoBehaviour, ISaveManager
 
     private void Start()
     {
+        unscaledInvoke = GetComponent<UnscaledInvoke>();
+
         SwitchTo(inGameUI);
         characterUI.gameObject.SetActive(true);
         skillTreeUI.gameObject.SetActive(true);
@@ -55,7 +58,11 @@ public class UI : MonoBehaviour, ISaveManager
         // Ensure tooltip windows are always inactive at start
         itemTooltip.gameObject.SetActive(false);
         statTooltip.gameObject.SetActive(false);
+        unscaledInvoke.InvokeUnscaled(NewMethod, .01f);
+    }
 
+    private void NewMethod()
+    {
         characterUI.gameObject.SetActive(false);
         skillTreeUI.gameObject.SetActive(false);
     }

@@ -75,10 +75,13 @@ public class SaveManager : MonoBehaviour
 
     private List<ISaveManager> FindAllSaveManagers()
     {
-        IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
+        // This finds all MonoBehaviours in the scene, including inactive ones
+        IEnumerable<ISaveManager> saveManagers = Resources.FindObjectsOfTypeAll<MonoBehaviour>().OfType<ISaveManager>();
 
+        // Convert the IEnumerable to a List and return it
         return new List<ISaveManager>(saveManagers);
     }
+
 
     public bool HasSavedData()
     {
