@@ -25,6 +25,7 @@ public class PlayerCatchSwordState : PlayerState
 
         rb.velocity = new Vector2(player.swordReturnImpact * -player.facingDir, rb.velocity.y);
         player.fx.CreateDustParticles(DustParticleType.Landing);
+        player.fx.ScreenShake(player.fx.lightShakePower);
     }
 
     public override void Exit()

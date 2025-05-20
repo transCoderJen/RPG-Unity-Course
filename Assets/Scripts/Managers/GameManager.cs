@@ -122,4 +122,16 @@ public class GameManager : MonoBehaviour, ISaveManager
 
         return closestCheckpoint;
     }
+
+    // Function to exit the game
+    public void ExitGame()
+    {
+        // If running in the Unity Editor, stop playing
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        // If running in a built application, quit the application
+        Application.Quit();
+        #endif
+    }
 }

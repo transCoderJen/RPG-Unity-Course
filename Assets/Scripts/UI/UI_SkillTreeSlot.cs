@@ -34,21 +34,22 @@ public class UI_SkillTreeSlot : MonoBehaviour, ISaveManager
     {
         gameObject.name = "SkillTreeSlot_UI - " + skillName;
         transform.parent.gameObject.name = skillName;
-        skillImage = transform.parent.gameObject.GetComponent<Image>();
+        
     }
 
     private void Awake()
     {
-        
-    }
-
-    private void Start()
-    {
+        skillImage = transform.parent.gameObject.GetComponent<Image>();
         if (!startActive)
             gameObject.SetActive(false);
         
         if (startActive)
             skillImage.color = lockedSkillColor;
+    }
+
+    private void Start()
+    {
+        
 
         ui = GetComponentInParent<UI>();
 

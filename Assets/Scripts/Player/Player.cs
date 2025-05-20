@@ -51,6 +51,8 @@ public class Player : Entity
 
     #endregion
 
+    public PlayerFX fx { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -84,8 +86,17 @@ public class Player : Entity
         defaultMoveSpeed = moveSpeed;
         defaultJumpForce = jumpForce;
         defaultDashSpeed = dashSpeed;
+
+        fx = GetComponent<PlayerFX>();
     }
 
+    public override void DamageEffect(bool _knockback)
+    {
+        fx.StartCoroutine("FlashFX");
+        
+        base.DamageEffect(_knockback);   
+    }
+    
     protected override void Update()
     {
         if (ui.IsMenuOpen())

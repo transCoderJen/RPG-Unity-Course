@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -41,37 +42,28 @@ public class UI_InGame : MonoBehaviour
     }
 
     #region Unlock Skills
-    public void UnlockDash()
+    public void UnlockDash() => dashImage.transform.parent.gameObject.SetActive(true);
+
+    public void UnlockParry() => parryImage.transform.parent.gameObject.SetActive(true);
+
+    public void UnlockCrystal() => crystalImage.transform.parent.gameObject.SetActive(true);
+
+    public void UnlockSword() => swordImage.transform.parent.gameObject.SetActive(true);
+
+    public void UnlockFlask() 
     {
-        dashImage.transform.parent.gameObject.SetActive(true);
+        Invoke("SetFlaskFillAmount", .1f);
+        
+        flaskImage.transform.parent.gameObject.SetActive(true);
     }
 
-    public void UnlockParry()
-    {
-        parryImage.transform.parent.gameObject.SetActive(true);
-    }
-
-    public void UnlockCrystal()
-    {
-        crystalImage.transform.parent.gameObject.SetActive(true);
-    }   
-
-    public void UnlockSword()
-    {
-        swordImage.transform.parent.gameObject.SetActive(true);
-    }
-
-    public void UnlockFlask(bool _unlock)
-    {
-        flaskImage.transform.parent.gameObject.SetActive(_unlock);
-    }
-
-    public void UnlockBlackhole()
-    {
-        blackholeImage.transform.parent.gameObject.SetActive(true);
-    }
+    public void UnlockBlackhole() => blackholeImage.transform.parent.gameObject.SetActive(true);
     #endregion
 
+    private void SetFlaskFillAmount()
+    {
+        flaskImage.fillAmount = Inventory.instance.GetFlaskCooldownRatio();
+    }
     void Update()
     {
         UpdateSoulsUI();
@@ -88,7 +80,7 @@ public class UI_InGame : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
             SetCooldownOf(crystalImage);
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyUp(KeyCode.Mouse1) && !PlayerManager.instance.player.sword)
             SetCooldownOf(swordImage);
 
         if (Input.GetKeyDown(KeyCode.Alpha1))

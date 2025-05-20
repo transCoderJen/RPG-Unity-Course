@@ -51,6 +51,7 @@ public class PlayerGroundedState : PlayerState
         {
             return true;
         }
+
         if(!player.sword.GetComponent<SwordSkillController>().canRotate)
             player.sword.GetComponent<SwordSkillController>().ReturnSword();
         return false;

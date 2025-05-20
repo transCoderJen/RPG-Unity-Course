@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEditor.Il2Cpp;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.UIElements.Experimental;
 
 public enum EquipmentType
 {

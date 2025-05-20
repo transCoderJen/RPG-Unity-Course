@@ -35,8 +35,12 @@ public class Inventory : MonoBehaviour, ISaveManager
     private float armorTimer;
 
     [Header("Database")]
+    public List<ItemData> itemDataBase;
     public List<InventoryItem> loadedItems;
     public List<ItemData_Equipment> loadedEquipment;
+
+    [Header("IN GAME UI")]
+    [SerializeField] private UI_InGame inGameUI;
 
     private void Awake()
     {
@@ -104,6 +108,11 @@ public class Inventory : MonoBehaviour, ISaveManager
 
         ItemData_Equipment oldEquipment = null;
 
+        if (newEquipment.equipmentType == EquipmentType.Flask)
+        {
+            inGameUI.UnlockFlask();
+        }
+
         foreach (KeyValuePair<ItemData_Equipment, InventoryItem> item in equipmentDictionary)
         {
             if (item.Key.equipmentType == newEquipment.equipmentType)
@@ -127,6 +136,7 @@ public class Inventory : MonoBehaviour, ISaveManager
 
     public void UnequipItem(ItemData_Equipment oldEquipment)
     {
+
         if (equipmentDictionary.TryGetValue(oldEquipment, out InventoryItem value))
         {
             equipment.Remove(value);
@@ -321,6 +331,11 @@ public class Inventory : MonoBehaviour, ISaveManager
         }
     }
 
+    public float GetFlaskCooldownRatio() {
+        ItemData_Equipment flask = GetEquipment(EquipmentType.Flask);
+        return flaskTimer / flask.itemCooldown;
+    }
+
     public float FlaskCooldown() {
         ItemData_Equipment flask = GetEquipment(EquipmentType.Flask);
         if (flask == null)
@@ -352,7 +367,7 @@ public class Inventory : MonoBehaviour, ISaveManager
     {
         foreach(KeyValuePair<string, int> pair in _data.inventory)
         {
-            foreach (var item in GetItemDataBase())
+            foreach (var item in itemDataBase)
             {
                 if(item != null && item.itemId == pair.Key)
                 {
@@ -368,7 +383,7 @@ public class Inventory : MonoBehaviour, ISaveManager
 
         foreach(string loadedItemId in _data.equipmentId)
         {
-            foreach(var item in GetItemDataBase())
+            foreach(var item in itemDataBase)
             {
                 if(item != null && item.itemId == loadedItemId)
                 {
@@ -399,6 +414,10 @@ public class Inventory : MonoBehaviour, ISaveManager
         }
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Fill up item data base")]
+    private void FillUpItemDataBase() => itemDataBase = new List<ItemData>(GetItemDataBase());
+
     private List<ItemData> GetItemDataBase()
     {
         List<ItemData> itemDataBase = new List<ItemData>();
@@ -413,6 +432,6 @@ public class Inventory : MonoBehaviour, ISaveManager
         }
 
         return itemDataBase;
-
     }
+#endif
 }

@@ -201,8 +201,9 @@ public class CharacterStats : MonoBehaviour
     
     public virtual void DecreaseHealthBy(int _damage)
     {
-        currentHealth -= Mathf.RoundToInt(_damage * (1 + vulnerabilityAmount));
-
+        int totalDamage = Mathf.RoundToInt(_damage * (1 + vulnerabilityAmount)) + 1;
+        currentHealth -= totalDamage;
+        fx.CreatePopUpText(totalDamage.ToString());
         onHealthChanged();
     }
 

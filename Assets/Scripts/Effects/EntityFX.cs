@@ -1,8 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+// using System.Numerics;
+
+
+
+using TMPro;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using Random = UnityEngine.Random;
@@ -13,12 +15,8 @@ public enum DustParticleType {
 }
 public class EntityFX : MonoBehaviour
 {
-    SpriteRenderer sr;
-
-    [Header("AFter Image FX")]
-    // [SerializeField] private GameObject afterImagePrefab;
-    [SerializeField] private float fadeDuration;
-    public float afterImageRate;
+    [Header("Pop Up Text")]
+    [SerializeField] private GameObject popUpTextPrefab;
 
     [Header("Flash FX")]
     [SerializeField] private Material hitMat;
@@ -37,8 +35,8 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem shockFx;
 
     [Header("Ailment Audio")]
+    [SerializeField] private AudioMixerGroup soundEffectsGroup;
     private AudioSource burningAudio;
-    public AudioMixerGroup soundEffectsGroup;
 
     [Header("Hit FX")]
     [SerializeField] private GameObject hitFxPrefab;
@@ -48,60 +46,28 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem runningdDustFx;
     [SerializeField] private ParticleSystem landingDustFx;
 
-    private void Start()
+    SpriteRenderer sr;
+
+    protected virtual void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
         originalMat = sr.material;
+        
 
         burningAudio = gameObject.AddComponent<AudioSource>();
         burningAudio.clip = AudioManager.instance.getSFXAudioSource(SFXSounds.burning).clip;
-        burningAudio.outputAudioMixerGroup = soundEffectsGroup;
+        burningAudio.outputAudioMixerGroup = soundEffectsGroup;  
     }
-
-    public void createAfterImageFX(Transform playerTransform)
+    
+    public void CreatePopUpText(string _text)
     {
-        // Create a new GameObject to hold the afterimage
-        GameObject newAfterImage = new GameObject("AfterImage");
+        float randomX = Random.Range(-.5f,.5f);
+        float randomY = Random.Range(1, 3);
 
-        // Set the new GameObject's position and rotation to match the player
-        newAfterImage.transform.position = playerTransform.position;
-        newAfterImage.transform.rotation = playerTransform.rotation;
-
-        // Add a SpriteRenderer component to the new GameObject
-        SpriteRenderer afterImageRenderer = newAfterImage.AddComponent<SpriteRenderer>();
-
-        // Get the SpriteRenderer from the player
-        SpriteRenderer playerSpriteRenderer = playerTransform.GetComponentInChildren<SpriteRenderer>();
-
-        // Copy the sprite and other properties from the player's SpriteRenderer
-        afterImageRenderer.sprite = playerSpriteRenderer.sprite;
-        afterImageRenderer.color = playerSpriteRenderer.color;
-        afterImageRenderer.flipX = playerSpriteRenderer.flipX;
-        afterImageRenderer.flipY = playerSpriteRenderer.flipY;
-        afterImageRenderer.sortingLayerID = playerSpriteRenderer.sortingLayerID;
-        afterImageRenderer.sortingOrder = playerSpriteRenderer.sortingOrder;
-
-        // Start the fade coroutine
-        StartCoroutine(fadeAfterImageFX(newAfterImage));
-    }
-
-    IEnumerator fadeAfterImageFX(GameObject _afterImage)
-    {
-        SpriteRenderer spriteRenderer = _afterImage.GetComponent<SpriteRenderer>();
-        Color startColor = spriteRenderer.color;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(startColor.a, 0f, elapsedTime / fadeDuration);
-            spriteRenderer.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-            yield return null;
-        }
-
-        // Ensure the alpha is set to 0 after the loop
-        spriteRenderer.color = new Color(startColor.r, startColor.g, startColor.b, 0f);
-        Destroy(_afterImage);
+        Vector3 positionOffset = new Vector3(randomX, randomY);
+        GameObject newText = Instantiate(popUpTextPrefab, transform.position + positionOffset, Quaternion.identity, transform);
+        
+        newText.GetComponent<TextMeshPro>().text = _text;
     }
 
     public void MakeTransparent(bool _transparent)

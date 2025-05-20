@@ -55,7 +55,7 @@ public class PlayerState
     {
         if (afterImageTimer > player.fx.afterImageRate)
         {
-            player.fx.createAfterImageFX(player.transform);
+            player.fx.CreateAfterImageFX(player.transform);
             afterImageTimer = 0;
         }
     }

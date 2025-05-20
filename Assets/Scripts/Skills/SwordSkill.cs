@@ -130,6 +130,7 @@ public class SwordSkill : Skill
 
     protected override void Update()
     {
+        base.Update();
         if(Input.GetKeyUp(KeyCode.Mouse1))
         {
             finalDir = new Vector2(AimDirection().normalized.x * launchForce.x, AimDirection().normalized.y * launchForce.y);
@@ -143,6 +144,12 @@ public class SwordSkill : Skill
                 
             }
         }
+    }
+
+    public override void UseSkill()
+    {
+        base.UseSkill();
+        CreateSword();
     }
 
     public void CreateSword()
